@@ -1,17 +1,28 @@
 import { InjectionKey } from "vue";
-import { createStore, type Store } from "vuex";
+import { createStore, useStore as baseUseStore, type Store } from "vuex";
 
 interface State {
-  username: string;
+  count: number;
 }
 
-export const storeKey: InjectionKey<Store<State>> = Symbol();
+export const key: InjectionKey<Store<State>> = Symbol();
 
-export default createStore<State>({
+export const store = createStore<State>({
   state: {
-    username: "Tony",
+    count: 0,
   },
-  mutations: {},
+  mutations: {
+    increment(state) {
+      state.count++;
+    },
+    reset(state) {
+      state.count = 0;
+    },
+  },
   actions: {},
   modules: {},
 });
+
+export function useStore() {
+  return baseUseStore(key);
+}
